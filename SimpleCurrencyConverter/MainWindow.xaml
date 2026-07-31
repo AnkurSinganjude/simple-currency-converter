@@ -7,7 +7,7 @@
     mc:Ignorable="d"
     Title="Simple Currency Converter">
 
-    <Grid>
+    <Grid x:Name="RootGrid">
         <NavigationView x:Name="NavView"
                         IsBackButtonVisible="Collapsed"
                         IsSettingsVisible="False"
@@ -26,6 +26,17 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
+
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Name="ThemeToggleItem"
+                                    Content="Light Mode"
+                                    Tag="ThemeToggle"
+                                    SelectsOnInvoked="False">
+                    <NavigationViewItem.Icon>
+                        <FontIcon x:Name="ThemeIcon" Glyph="&#xE793;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.FooterMenuItems>
 
             <Frame x:Name="ContentFrame" />
         </NavigationView>

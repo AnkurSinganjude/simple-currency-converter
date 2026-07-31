@@ -7,6 +7,8 @@ namespace SimpleCurrencyConverter;
 
 public sealed partial class MainWindow : Window
 {
+    private bool _isDarkTheme = true;
+
     public MainWindow()
     {
         this.InitializeComponent();
@@ -18,6 +20,9 @@ public sealed partial class MainWindow : Window
         var appWindow = this.AppWindow;
         appWindow.Resize(new Windows.Graphics.SizeInt32(800, 750));
         appWindow.Title = "Simple Currency Converter";
+
+        // Load saved theme preference
+        LoadThemePreference();
     }
 
     private void NavView_Loaded(object sender, RoutedEventArgs e)
@@ -40,7 +45,63 @@ public sealed partial class MainWindow : Window
                 case "HistoryPage":
                     ContentFrame.Navigate(typeof(HistoryPage));
                     break;
+                case "ThemeToggle":
+                    ToggleTheme();
+                    break;
             }
         }
+    }
+
+    private void ToggleTheme()
+    {
+        _isDarkTheme = !_isDarkTheme;
+        ApplyTheme();
+        SaveThemePreference();
+    }
+
+    private void ApplyTheme()
+    {
+        if (RootGrid.XamlRoot?.Content is FrameworkElement rootElement)
+        {
+            rootElement.RequestedTheme = _isDarkTheme ? ElementTheme.Dark : ElementTheme.Light;
+        }
+        else
+        {
+            RootGrid.RequestedTheme = _isDarkTheme ? ElementTheme.Dark : ElementTheme.Light;
+        }
+
+        // Update toggle button text and icon
+        ThemeToggleItem.Content = _isDarkTheme ? "Light Mode" : "Dark Mode";
+        ThemeIcon.Glyph = _isDarkTheme ? "\uE793" : "\uE708"; // Sun : Moon
+    }
+
+    private void LoadThemePreference()
+    {
+        try
+        {
+            var settingsPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "SimpleCurrencyConverter", "theme.txt");
+            if (File.Exists(settingsPath))
+            {
+                _isDarkTheme = File.ReadAllText(settingsPath).Trim() == "dark";
+            }
+        }
+        catch { }
+
+        ApplyTheme();
+    }
+
+    private void SaveThemePreference()
+    {
+        try
+        {
+            var folder = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "SimpleCurrencyConverter");
+            Directory.CreateDirectory(folder);
+            File.WriteAllText(Path.Combine(folder, "theme.txt"), _isDarkTheme ? "dark" : "light");
+        }
+        catch { }
     }
 }
