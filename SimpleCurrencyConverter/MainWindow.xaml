@@ -13,6 +13,7 @@
                         IsSettingsVisible="False"
                         PaneDisplayMode="Left"
                         SelectionChanged="NavView_SelectionChanged"
+                        ItemInvoked="NavView_ItemInvoked"
                         Loaded="NavView_Loaded">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Convert" Tag="MainPage">

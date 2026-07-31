@@ -45,10 +45,15 @@ public sealed partial class MainWindow : Window
                 case "HistoryPage":
                     ContentFrame.Navigate(typeof(HistoryPage));
                     break;
-                case "ThemeToggle":
-                    ToggleTheme();
-                    break;
             }
+        }
+    }
+
+    private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+    {
+        if (args.InvokedItemContainer is NavigationViewItem item && item.Tag?.ToString() == "ThemeToggle")
+        {
+            ToggleTheme();
         }
     }
 
