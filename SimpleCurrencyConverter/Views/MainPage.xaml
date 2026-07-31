@@ -26,6 +26,27 @@
                      IsClosable="True"
                      Margin="0,0,0,8" />
 
+            <!-- Header with gradient icon -->
+            <StackPanel Orientation="Horizontal" Spacing="14" Margin="0,0,0,8">
+                <Border CornerRadius="12" Width="48" Height="48">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#6366F1" Offset="0.0" />
+                            <GradientStop Color="#8B5CF6" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <FontIcon Glyph="&#xE8CB;" FontSize="22" Foreground="White"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <StackPanel VerticalAlignment="Center" Spacing="0">
+                    <TextBlock Text="Currency Converter"
+                               FontSize="22" FontWeight="SemiBold" />
+                    <TextBlock Text="Real-time exchange rates"
+                               FontSize="12"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                </StackPanel>
+            </StackPanel>
+
             <!-- Main Converter Card -->
             <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -34,26 +55,25 @@
                     Padding="28,24,28,28">
                 <StackPanel Spacing="20">
 
-                    <!-- Header -->
-                    <StackPanel Spacing="2">
-                        <TextBlock Text="Convert"
-                                   Style="{StaticResource TitleTextBlockStyle}"
-                                   FontWeight="SemiBold" />
-                        <TextBlock Text="Real-time currency conversion"
-                                   Style="{StaticResource CaptionTextBlockStyle}"
-                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                    </StackPanel>
-
                     <!-- From Section -->
-                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-                            CornerRadius="8"
-                            Padding="16">
+                    <Border CornerRadius="10" Padding="20,16">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#1A3B82F6" Offset="0.0" />
+                                <GradientStop Color="#0D3B82F6" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#333B82F6" />
+                        </Border.BorderBrush>
+                        <Border.BorderThickness>1</Border.BorderThickness>
                         <StackPanel Spacing="10">
-                            <TextBlock Text="FROM"
-                                       FontSize="11"
-                                       FontWeight="SemiBold"
-                                       CharacterSpacing="60"
-                                       Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Border Background="#3B82F6" CornerRadius="4" Padding="6,2">
+                                    <TextBlock Text="FROM" FontSize="10" FontWeight="Bold"
+                                               CharacterSpacing="80" Foreground="White" />
+                                </Border>
+                            </StackPanel>
                             <ComboBox x:Name="FromCurrencyBox"
                                       HorizontalAlignment="Stretch"
                                       PlaceholderText="Select currency"
@@ -77,21 +97,35 @@
                             ToolTipService.ToolTip="Swap currencies"
                             Width="44" Height="44"
                             CornerRadius="22"
-                            Padding="0"
-                            Style="{StaticResource AccentButtonStyle}">
-                        <FontIcon Glyph="&#xE74B;" FontSize="18" />
+                            Padding="0">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#6366F1" Offset="0.0" />
+                                <GradientStop Color="#8B5CF6" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <FontIcon Glyph="&#xE74B;" FontSize="18" Foreground="White" />
                     </Button>
 
                     <!-- To Section -->
-                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-                            CornerRadius="8"
-                            Padding="16">
+                    <Border CornerRadius="10" Padding="20,16">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#1A10B981" Offset="0.0" />
+                                <GradientStop Color="#0D10B981" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#3310B981" />
+                        </Border.BorderBrush>
+                        <Border.BorderThickness>1</Border.BorderThickness>
                         <StackPanel Spacing="10">
-                            <TextBlock Text="TO"
-                                       FontSize="11"
-                                       FontWeight="SemiBold"
-                                       CharacterSpacing="60"
-                                       Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Border Background="#10B981" CornerRadius="4" Padding="6,2">
+                                    <TextBlock Text="TO" FontSize="10" FontWeight="Bold"
+                                               CharacterSpacing="80" Foreground="White" />
+                                </Border>
+                            </StackPanel>
                             <ComboBox x:Name="ToCurrencyBox"
                                       HorizontalAlignment="Stretch"
                                       PlaceholderText="Select currency"
@@ -115,7 +149,8 @@
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                         <GradientStop Color="#6366F1" Offset="0.0" />
-                        <GradientStop Color="#8B5CF6" Offset="1.0" />
+                        <GradientStop Color="#8B5CF6" Offset="0.5" />
+                        <GradientStop Color="#A78BFA" Offset="1.0" />
                     </LinearGradientBrush>
                 </Border.Background>
                 <Grid>
@@ -126,15 +161,15 @@
 
                     <StackPanel Grid.Column="0" Spacing="6">
                         <TextBlock x:Name="ConvertedAmountText"
-                                   FontSize="32"
+                                   FontSize="34"
                                    FontWeight="Bold"
                                    Foreground="White" />
                         <TextBlock x:Name="RateText"
                                    FontSize="13"
-                                   Foreground="#DEDEDF" />
+                                   Foreground="#E0E0E0" />
                         <TextBlock x:Name="LastUpdatedText"
                                    FontSize="11"
-                                   Foreground="#ABABAC"  />
+                                   Foreground="#B0B0B0" />
                     </StackPanel>
 
                     <Button x:Name="FavoriteButton"
@@ -144,7 +179,7 @@
                             Width="40" Height="40"
                             CornerRadius="20"
                             Padding="0"
-                            Background="Transparent"
+                            Background="#33FFFFFF"
                             BorderBrush="Transparent"
                             ToolTipService.ToolTip="Toggle favorite">
                         <FontIcon x:Name="FavoriteIcon" Glyph="&#xE734;" FontSize="20"
@@ -164,8 +199,12 @@
                     Visibility="Collapsed">
                 <StackPanel Spacing="12">
                     <StackPanel Orientation="Horizontal" Spacing="8">
-                        <FontIcon Glyph="&#xE735;" FontSize="16"
-                                  Foreground="{ThemeResource SystemFillColorCautionBrush}" />
+                        <Border CornerRadius="4" Padding="6,2">
+                            <Border.Background>
+                                <SolidColorBrush Color="#F59E0B" />
+                            </Border.Background>
+                            <FontIcon Glyph="&#xE735;" FontSize="12" Foreground="White" />
+                        </Border>
                         <TextBlock Text="Favorites"
                                    Style="{StaticResource BodyStrongTextBlockStyle}" />
                     </StackPanel>
@@ -181,7 +220,7 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <FontIcon Grid.Column="0" Glyph="&#xE8AB;" FontSize="14"
-                                              Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                              Foreground="#F59E0B" />
                                     <TextBlock Grid.Column="1" Text="{Binding}"
                                                VerticalAlignment="Center" />
                                     <FontIcon Grid.Column="2" Glyph="&#xE76C;" FontSize="12"
