@@ -7,122 +7,187 @@
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,16,0">
-        <StackPanel Spacing="16" Padding="32" MaxWidth="640" HorizontalAlignment="Left">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Spacing="4" Padding="40,32,40,40" MaxWidth="560"
+                    HorizontalAlignment="Center">
 
-            <!-- Title -->
-            <TextBlock Text="Currency Converter" Style="{StaticResource TitleTextBlockStyle}" />
-
-            <!-- Offline Banner -->
+            <!-- Banners -->
             <InfoBar x:Name="OfflineBanner"
                      Title="Offline Mode"
                      Message="Using cached exchange rates. Rates may not be current."
                      Severity="Warning"
                      IsOpen="False"
-                     IsClosable="False" />
-
-            <!-- Error Banner -->
+                     IsClosable="False"
+                     Margin="0,0,0,8" />
             <InfoBar x:Name="ErrorBanner"
                      Title="Error"
                      Severity="Error"
                      IsOpen="False"
-                     IsClosable="True" />
+                     IsClosable="True"
+                     Margin="0,0,0,8" />
 
-            <!-- From Currency -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="Amount" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                <Grid ColumnSpacing="12">
+            <!-- Main Converter Card -->
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="28,24,28,28">
+                <StackPanel Spacing="20">
+
+                    <!-- Header -->
+                    <StackPanel Spacing="2">
+                        <TextBlock Text="Convert"
+                                   Style="{StaticResource TitleTextBlockStyle}"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Text="Real-time currency conversion"
+                                   Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+
+                    <!-- From Section -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            CornerRadius="8"
+                            Padding="16">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="FROM"
+                                       FontSize="11"
+                                       FontWeight="SemiBold"
+                                       CharacterSpacing="60"
+                                       Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                            <ComboBox x:Name="FromCurrencyBox"
+                                      HorizontalAlignment="Stretch"
+                                      PlaceholderText="Select currency"
+                                      SelectionChanged="FromCurrency_SelectionChanged" />
+                            <NumberBox x:Name="AmountBox"
+                                       Value="1"
+                                       Minimum="0"
+                                       SpinButtonPlacementMode="Hidden"
+                                       PlaceholderText="Enter amount"
+                                       ValueChanged="AmountBox_ValueChanged"
+                                       HorizontalAlignment="Stretch"
+                                       FontSize="28"
+                                       FontWeight="SemiBold" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Swap Button -->
+                    <Button x:Name="SwapButton"
+                            HorizontalAlignment="Center"
+                            Click="SwapButton_Click"
+                            ToolTipService.ToolTip="Swap currencies"
+                            Width="44" Height="44"
+                            CornerRadius="22"
+                            Padding="0"
+                            Style="{StaticResource AccentButtonStyle}">
+                        <FontIcon Glyph="&#xE74B;" FontSize="18" />
+                    </Button>
+
+                    <!-- To Section -->
+                    <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                            CornerRadius="8"
+                            Padding="16">
+                        <StackPanel Spacing="10">
+                            <TextBlock Text="TO"
+                                       FontSize="11"
+                                       FontWeight="SemiBold"
+                                       CharacterSpacing="60"
+                                       Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                            <ComboBox x:Name="ToCurrencyBox"
+                                      HorizontalAlignment="Stretch"
+                                      PlaceholderText="Select currency"
+                                      SelectionChanged="ToCurrency_SelectionChanged" />
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </Border>
+
+            <!-- Loading -->
+            <ProgressBar x:Name="LoadingBar" IsIndeterminate="True" Visibility="Collapsed"
+                         Margin="0,4,0,0" />
+
+            <!-- Result Card -->
+            <Border x:Name="ResultCard"
+                    Background="{ThemeResource AccentFillColorDefaultBrush}"
+                    CornerRadius="12"
+                    Padding="28,24"
+                    Margin="0,4,0,0"
+                    Visibility="Collapsed">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <NumberBox x:Name="AmountBox"
-                               Value="1"
-                               Minimum="0"
-                               SpinButtonPlacementMode="Compact"
-                               PlaceholderText="Enter amount"
-                               ValueChanged="AmountBox_ValueChanged"
-                               Grid.Column="0" />
-                    <ComboBox x:Name="FromCurrencyBox"
-                              Width="280"
-                              PlaceholderText="From currency"
-                              SelectionChanged="FromCurrency_SelectionChanged"
-                              Grid.Column="1" />
-                </Grid>
-            </StackPanel>
 
-            <!-- Swap Button -->
-            <Button x:Name="SwapButton"
-                    HorizontalAlignment="Center"
-                    Click="SwapButton_Click"
-                    ToolTipService.ToolTip="Swap currencies"
-                    Padding="12,8">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <FontIcon Glyph="&#xE8AB;" FontSize="16" />
-                    <TextBlock Text="Swap" />
-                </StackPanel>
-            </Button>
+                    <StackPanel Grid.Column="0" Spacing="6">
+                        <TextBlock x:Name="ConvertedAmountText"
+                                   FontSize="32"
+                                   FontWeight="Bold"
+                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                        <TextBlock x:Name="RateText"
+                                   FontSize="13"
+                                   Foreground="{ThemeResource TextOnAccentFillColorSecondaryBrush}" />
+                        <TextBlock x:Name="LastUpdatedText"
+                                   FontSize="11"
+                                   Foreground="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
+                                   Opacity="0.7" />
+                    </StackPanel>
 
-            <!-- To Currency -->
-            <StackPanel Spacing="8">
-                <TextBlock Text="Convert To" Style="{StaticResource BodyStrongTextBlockStyle}" />
-                <ComboBox x:Name="ToCurrencyBox"
-                          Width="280"
-                          PlaceholderText="To currency"
-                          SelectionChanged="ToCurrency_SelectionChanged"
-                          HorizontalAlignment="Left" />
-            </StackPanel>
-
-            <!-- Loading -->
-            <ProgressRing x:Name="LoadingRing" IsActive="False" Width="32" Height="32" HorizontalAlignment="Left" />
-
-            <!-- Result Card -->
-            <Border x:Name="ResultCard"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Padding="20"
-                    Visibility="Collapsed">
-                <StackPanel Spacing="8">
-                    <TextBlock x:Name="ConvertedAmountText"
-                               Style="{StaticResource TitleLargeTextBlockStyle}"
-                               FontWeight="Bold" />
-                    <TextBlock x:Name="RateText"
-                               Style="{StaticResource CaptionTextBlockStyle}"
-                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
-                    <TextBlock x:Name="LastUpdatedText"
-                               Style="{StaticResource CaptionTextBlockStyle}"
-                               Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
-
-                    <!-- Favorite Button -->
                     <Button x:Name="FavoriteButton"
+                            Grid.Column="1"
                             Click="FavoriteButton_Click"
-                            HorizontalAlignment="Left"
-                            Padding="12,6"
-                            Margin="0,4,0,0">
-                        <StackPanel Orientation="Horizontal" Spacing="8">
-                            <FontIcon x:Name="FavoriteIcon" Glyph="&#xE734;" FontSize="16" />
-                            <TextBlock x:Name="FavoriteText" Text="Add to Favorites" />
-                        </StackPanel>
+                            VerticalAlignment="Top"
+                            Width="40" Height="40"
+                            CornerRadius="20"
+                            Padding="0"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            ToolTipService.ToolTip="Toggle favorite">
+                        <FontIcon x:Name="FavoriteIcon" Glyph="&#xE734;" FontSize="20"
+                                  Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
                     </Button>
-                </StackPanel>
+                </Grid>
             </Border>
 
             <!-- Favorites Section -->
-            <StackPanel x:Name="FavoritesSection" Spacing="8" Visibility="Collapsed">
-                <TextBlock Text="⭐ Favorites" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,8,0,0" />
-                <ListView x:Name="FavoritesList"
-                          SelectionMode="Single"
-                          SelectionChanged="FavoritesList_SelectionChanged"
-                          MaxHeight="200">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" Padding="4" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackPanel>
+            <Border x:Name="FavoritesSection"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    Padding="28,20,28,12"
+                    Margin="0,8,0,0"
+                    Visibility="Collapsed">
+                <StackPanel Spacing="12">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE735;" FontSize="16"
+                                  Foreground="{ThemeResource SystemFillColorCautionBrush}" />
+                        <TextBlock Text="Favorites"
+                                   Style="{StaticResource BodyStrongTextBlockStyle}" />
+                    </StackPanel>
+                    <ListView x:Name="FavoritesList"
+                              SelectionMode="Single"
+                              SelectionChanged="FavoritesList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="4,10" ColumnSpacing="12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Grid.Column="0" Glyph="&#xE8AB;" FontSize="14"
+                                              Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding}"
+                                               VerticalAlignment="Center" />
+                                    <FontIcon Grid.Column="2" Glyph="&#xE76C;" FontSize="12"
+                                              Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackPanel>
+            </Border>
 
         </StackPanel>
     </ScrollViewer>

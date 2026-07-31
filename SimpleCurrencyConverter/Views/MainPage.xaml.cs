@@ -52,8 +52,7 @@ public sealed partial class MainPage : Page
                     LastUpdatedText.Text = ViewModel.LastUpdatedText;
                     break;
                 case nameof(MainViewModel.IsLoading):
-                    LoadingRing.IsActive = ViewModel.IsLoading;
-                    LoadingRing.Visibility = ViewModel.IsLoading ? Visibility.Visible : Visibility.Collapsed;
+                    LoadingBar.Visibility = ViewModel.IsLoading ? Visibility.Visible : Visibility.Collapsed;
                     break;
                 case nameof(MainViewModel.HasResult):
                     ResultCard.Visibility = ViewModel.HasResult ? Visibility.Visible : Visibility.Collapsed;
@@ -67,7 +66,6 @@ public sealed partial class MainPage : Page
                     break;
                 case nameof(MainViewModel.IsFavorite):
                     FavoriteIcon.Glyph = ViewModel.IsFavorite ? "\uE735" : "\uE734";
-                    FavoriteText.Text = ViewModel.IsFavorite ? "Remove from Favorites" : "Add to Favorites";
                     break;
             }
 

@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
 
-    <Grid Padding="32">
+    <Grid Padding="40,32,40,40" MaxWidth="560" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -20,46 +20,63 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Conversion History"
-                       Style="{StaticResource TitleTextBlockStyle}"
-                       Grid.Column="0" />
+            <StackPanel Grid.Column="0" Spacing="2">
+                <TextBlock Text="History"
+                           Style="{StaticResource TitleTextBlockStyle}"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="Your recent conversions"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
             <Button x:Name="ClearButton"
-                    Content="Clear History"
                     Click="ClearButton_Click"
-                    Grid.Column="1" />
+                    Grid.Column="1"
+                    VerticalAlignment="Top"
+                    Padding="12,8">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE74D;" FontSize="14" />
+                    <TextBlock Text="Clear" />
+                </StackPanel>
+            </Button>
         </Grid>
 
         <!-- Empty State -->
-        <StackPanel x:Name="EmptyState"
-                    Grid.Row="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Spacing="8"
-                    Visibility="Collapsed">
-            <FontIcon Glyph="&#xE81C;" FontSize="48"
-                      Foreground="{ThemeResource TextFillColorTertiaryBrush}"
-                      HorizontalAlignment="Center" />
-            <TextBlock Text="No conversion history yet"
-                       Style="{StaticResource SubtitleTextBlockStyle}"
-                       Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                       HorizontalAlignment="Center" />
-            <TextBlock Text="Your recent conversions will appear here"
-                       Style="{StaticResource CaptionTextBlockStyle}"
-                       Foreground="{ThemeResource TextFillColorTertiaryBrush}"
-                       HorizontalAlignment="Center" />
-        </StackPanel>
+        <Border x:Name="EmptyState"
+                Grid.Row="1"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="12"
+                Padding="40"
+                VerticalAlignment="Center"
+                Visibility="Collapsed">
+            <StackPanel Spacing="12" HorizontalAlignment="Center">
+                <FontIcon Glyph="&#xE81C;" FontSize="48"
+                          Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                          HorizontalAlignment="Center" />
+                <TextBlock Text="No history yet"
+                           Style="{StaticResource SubtitleTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                           HorizontalAlignment="Center" />
+                <TextBlock Text="Your recent conversions will appear here"
+                           Style="{StaticResource CaptionTextBlockStyle}"
+                           Foreground="{ThemeResource TextFillColorTertiaryBrush}"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </Border>
 
         <!-- History List -->
         <ListView x:Name="HistoryListView"
                   Grid.Row="1"
-                  SelectionMode="None">
+                  SelectionMode="None"
+                  ItemContainerStyle="{x:Null}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:ConversionResult">
                     <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                             BorderThickness="1"
-                            CornerRadius="8"
-                            Padding="16"
+                            CornerRadius="10"
+                            Padding="20,16"
                             Margin="0,0,0,8">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -68,14 +85,15 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Spacing="4">
                                 <TextBlock Text="{x:Bind Summary}"
-                                           Style="{StaticResource BodyStrongTextBlockStyle}" />
+                                           FontSize="15"
+                                           FontWeight="SemiBold" />
                                 <TextBlock Text="{x:Bind RateSummary}"
-                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           FontSize="12"
                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
                             </StackPanel>
                             <TextBlock Text="{x:Bind TimestampDisplay}"
                                        Grid.Column="1"
-                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       FontSize="11"
                                        Foreground="{ThemeResource TextFillColorTertiaryBrush}"
                                        VerticalAlignment="Center" />
                         </Grid>

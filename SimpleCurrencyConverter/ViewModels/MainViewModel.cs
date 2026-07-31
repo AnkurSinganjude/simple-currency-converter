@@ -168,7 +168,7 @@ public partial class MainViewModel : ObservableObject
             var toCurrency = CurrencyData.GetCurrency(pair.To);
             if (fromCurrency != null && toCurrency != null)
             {
-                Favorites.Add($"{fromCurrency.Flag} {pair.From} → {toCurrency.Flag} {pair.To}");
+                Favorites.Add($"{pair.From} → {pair.To}");
             }
         }
     }
