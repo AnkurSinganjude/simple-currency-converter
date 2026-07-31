@@ -21,6 +21,13 @@ public sealed partial class MainWindow : Window
         appWindow.Resize(new Windows.Graphics.SizeInt32(800, 750));
         appWindow.Title = "Simple Currency Converter";
 
+        // Set window icon
+        var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "app.ico");
+        if (File.Exists(iconPath))
+        {
+            appWindow.SetIcon(iconPath);
+        }
+
         // Load saved theme preference
         LoadThemePreference();
     }
