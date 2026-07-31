@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     NavigationCacheMode="Enabled">
 
-    <Grid Padding="40,32,40,40" MaxWidth="560" HorizontalAlignment="Center">
+    <Grid Padding="40,32,40,40" MaxWidth="560" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

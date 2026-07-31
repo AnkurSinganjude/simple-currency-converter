@@ -8,8 +8,8 @@
     NavigationCacheMode="Enabled">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Spacing="4" Padding="40,32,40,40" MaxWidth="520"
-                    HorizontalAlignment="Center" VerticalAlignment="Top">
+        <StackPanel Spacing="4" Padding="40,32,40,40" MaxWidth="560"
+                    HorizontalAlignment="Stretch">
 
             <!-- Banners -->
             <InfoBar x:Name="OfflineBanner"
