@@ -16,7 +16,7 @@ public sealed partial class MainWindow : Window
 
         // Set window size
         var appWindow = this.AppWindow;
-        appWindow.Resize(new Windows.Graphics.SizeInt32(900, 700));
+        appWindow.Resize(new Windows.Graphics.SizeInt32(800, 750));
         appWindow.Title = "Simple Currency Converter";
     }
 

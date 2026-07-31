@@ -8,8 +8,8 @@
     NavigationCacheMode="Enabled">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Spacing="4" Padding="40,32,40,40" MaxWidth="560"
-                    HorizontalAlignment="Center">
+        <StackPanel Spacing="4" Padding="40,32,40,40" MaxWidth="520"
+                    HorizontalAlignment="Center" VerticalAlignment="Top">
 
             <!-- Banners -->
             <InfoBar x:Name="OfflineBanner"
@@ -108,11 +108,16 @@
 
             <!-- Result Card -->
             <Border x:Name="ResultCard"
-                    Background="{ThemeResource AccentFillColorDefaultBrush}"
                     CornerRadius="12"
                     Padding="28,24"
                     Margin="0,4,0,0"
                     Visibility="Collapsed">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#6366F1" Offset="0.0" />
+                        <GradientStop Color="#8B5CF6" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -123,14 +128,13 @@
                         <TextBlock x:Name="ConvertedAmountText"
                                    FontSize="32"
                                    FontWeight="Bold"
-                                   Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                                   Foreground="White" />
                         <TextBlock x:Name="RateText"
                                    FontSize="13"
-                                   Foreground="{ThemeResource TextOnAccentFillColorSecondaryBrush}" />
+                                   Foreground="#DEDEDF" />
                         <TextBlock x:Name="LastUpdatedText"
                                    FontSize="11"
-                                   Foreground="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
-                                   Opacity="0.7" />
+                                   Foreground="#ABABAC"  />
                     </StackPanel>
 
                     <Button x:Name="FavoriteButton"
@@ -144,7 +148,7 @@
                             BorderBrush="Transparent"
                             ToolTipService.ToolTip="Toggle favorite">
                         <FontIcon x:Name="FavoriteIcon" Glyph="&#xE734;" FontSize="20"
-                                  Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+                                  Foreground="White" />
                     </Button>
                 </Grid>
             </Border>
