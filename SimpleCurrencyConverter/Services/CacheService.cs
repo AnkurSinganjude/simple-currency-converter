@@ -1,19 +1,24 @@
 using System.Text.Json;
-using Windows.Storage;
 
 namespace SimpleCurrencyConverter.Services;
 
 public class CacheService
 {
     private const string CacheFileName = "exchange_rates_cache.json";
-    private const string LastUpdatedKey = "cache_last_updated";
+    private const string LastUpdatedFileName = "cache_last_updated.txt";
 
+    private readonly string _dataFolder;
     private readonly string _cacheFilePath;
+    private readonly string _lastUpdatedFilePath;
 
     public CacheService()
     {
-        var localFolder = ApplicationData.Current.LocalFolder.Path;
-        _cacheFilePath = Path.Combine(localFolder, CacheFileName);
+        _dataFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SimpleCurrencyConverter");
+        Directory.CreateDirectory(_dataFolder);
+        _cacheFilePath = Path.Combine(_dataFolder, CacheFileName);
+        _lastUpdatedFilePath = Path.Combine(_dataFolder, LastUpdatedFileName);
     }
 
     public async Task SaveRatesAsync(string baseCurrency, Dictionary<string, double> rates, DateTime lastUpdated)
@@ -35,8 +40,7 @@ public class CacheService
             allRates[baseCurrency] = rates;
             var json = JsonSerializer.Serialize(allRates, new JsonSerializerOptions { WriteIndented = true });
             await File.WriteAllTextAsync(_cacheFilePath, json);
-
-            ApplicationData.Current.LocalSettings.Values[LastUpdatedKey] = lastUpdated.Ticks;
+            await File.WriteAllTextAsync(_lastUpdatedFilePath, lastUpdated.Ticks.ToString());
         }
         catch (Exception)
         {
@@ -56,8 +60,7 @@ public class CacheService
 
             if (allRates != null && allRates.TryGetValue(baseCurrency, out var rates))
             {
-                var ticks = ApplicationData.Current.LocalSettings.Values[LastUpdatedKey] as long? ?? 0;
-                var lastUpdated = ticks > 0 ? new DateTime(ticks, DateTimeKind.Utc) : DateTime.MinValue;
+                var lastUpdated = GetLastUpdated();
                 return (rates, lastUpdated);
             }
         }
@@ -70,7 +73,16 @@ public class CacheService
 
     public DateTime GetLastUpdated()
     {
-        var ticks = ApplicationData.Current.LocalSettings.Values[LastUpdatedKey] as long? ?? 0;
-        return ticks > 0 ? new DateTime(ticks, DateTimeKind.Utc).ToLocalTime() : DateTime.MinValue;
+        try
+        {
+            if (File.Exists(_lastUpdatedFilePath))
+            {
+                var ticksStr = File.ReadAllText(_lastUpdatedFilePath);
+                if (long.TryParse(ticksStr, out var ticks) && ticks > 0)
+                    return new DateTime(ticks, DateTimeKind.Utc).ToLocalTime();
+            }
+        }
+        catch { }
+        return DateTime.MinValue;
     }
 }

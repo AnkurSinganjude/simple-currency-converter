@@ -1,19 +1,27 @@
 using System.Text.Json;
-using Windows.Storage;
 
 namespace SimpleCurrencyConverter.Services;
 
 public class FavoritesService
 {
-    private const string FavoritesKey = "favorite_pairs";
+    private readonly string _favoritesFilePath;
+
+    public FavoritesService()
+    {
+        var dataFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SimpleCurrencyConverter");
+        Directory.CreateDirectory(dataFolder);
+        _favoritesFilePath = Path.Combine(dataFolder, "favorites.json");
+    }
 
     public List<string> GetFavorites()
     {
         try
         {
-            var json = ApplicationData.Current.LocalSettings.Values[FavoritesKey] as string;
-            if (!string.IsNullOrEmpty(json))
+            if (File.Exists(_favoritesFilePath))
             {
+                var json = File.ReadAllText(_favoritesFilePath);
                 return JsonSerializer.Deserialize<List<string>>(json) ?? new();
             }
         }
@@ -26,7 +34,7 @@ public class FavoritesService
         try
         {
             var json = JsonSerializer.Serialize(favorites);
-            ApplicationData.Current.LocalSettings.Values[FavoritesKey] = json;
+            File.WriteAllText(_favoritesFilePath, json);
         }
         catch { }
     }

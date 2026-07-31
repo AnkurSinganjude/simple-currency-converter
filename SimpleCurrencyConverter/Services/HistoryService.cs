@@ -1,6 +1,5 @@
 using System.Text.Json;
 using SimpleCurrencyConverter.Models;
-using Windows.Storage;
 
 namespace SimpleCurrencyConverter.Services;
 
@@ -13,8 +12,11 @@ public class HistoryService
 
     public HistoryService()
     {
-        var localFolder = ApplicationData.Current.LocalFolder.Path;
-        _historyFilePath = Path.Combine(localFolder, HistoryFileName);
+        var dataFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SimpleCurrencyConverter");
+        Directory.CreateDirectory(dataFolder);
+        _historyFilePath = Path.Combine(dataFolder, HistoryFileName);
     }
 
     public async Task<List<ConversionResult>> GetHistoryAsync()
