@@ -1,0 +1,129 @@
+<Page
+    x:Class="SimpleCurrencyConverter.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,16,0">
+        <StackPanel Spacing="16" Padding="32" MaxWidth="640" HorizontalAlignment="Left">
+
+            <!-- Title -->
+            <TextBlock Text="Currency Converter" Style="{StaticResource TitleTextBlockStyle}" />
+
+            <!-- Offline Banner -->
+            <InfoBar x:Name="OfflineBanner"
+                     Title="Offline Mode"
+                     Message="Using cached exchange rates. Rates may not be current."
+                     Severity="Warning"
+                     IsOpen="False"
+                     IsClosable="False" />
+
+            <!-- Error Banner -->
+            <InfoBar x:Name="ErrorBanner"
+                     Title="Error"
+                     Severity="Error"
+                     IsOpen="False"
+                     IsClosable="True" />
+
+            <!-- From Currency -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Amount" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <NumberBox x:Name="AmountBox"
+                               Value="1"
+                               Minimum="0"
+                               SpinButtonPlacementMode="Compact"
+                               PlaceholderText="Enter amount"
+                               ValueChanged="AmountBox_ValueChanged"
+                               Grid.Column="0" />
+                    <ComboBox x:Name="FromCurrencyBox"
+                              Width="280"
+                              PlaceholderText="From currency"
+                              SelectionChanged="FromCurrency_SelectionChanged"
+                              Grid.Column="1" />
+                </Grid>
+            </StackPanel>
+
+            <!-- Swap Button -->
+            <Button x:Name="SwapButton"
+                    HorizontalAlignment="Center"
+                    Click="SwapButton_Click"
+                    ToolTipService.ToolTip="Swap currencies"
+                    Padding="12,8">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE8AB;" FontSize="16" />
+                    <TextBlock Text="Swap" />
+                </StackPanel>
+            </Button>
+
+            <!-- To Currency -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="Convert To" Style="{StaticResource BodyStrongTextBlockStyle}" />
+                <ComboBox x:Name="ToCurrencyBox"
+                          Width="280"
+                          PlaceholderText="To currency"
+                          SelectionChanged="ToCurrency_SelectionChanged"
+                          HorizontalAlignment="Left" />
+            </StackPanel>
+
+            <!-- Loading -->
+            <ProgressRing x:Name="LoadingRing" IsActive="False" Width="32" Height="32" HorizontalAlignment="Left" />
+
+            <!-- Result Card -->
+            <Border x:Name="ResultCard"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="20"
+                    Visibility="Collapsed">
+                <StackPanel Spacing="8">
+                    <TextBlock x:Name="ConvertedAmountText"
+                               Style="{StaticResource TitleLargeTextBlockStyle}"
+                               FontWeight="Bold" />
+                    <TextBlock x:Name="RateText"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Name="LastUpdatedText"
+                               Style="{StaticResource CaptionTextBlockStyle}"
+                               Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+
+                    <!-- Favorite Button -->
+                    <Button x:Name="FavoriteButton"
+                            Click="FavoriteButton_Click"
+                            HorizontalAlignment="Left"
+                            Padding="12,6"
+                            Margin="0,4,0,0">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon x:Name="FavoriteIcon" Glyph="&#xE734;" FontSize="16" />
+                            <TextBlock x:Name="FavoriteText" Text="Add to Favorites" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- Favorites Section -->
+            <StackPanel x:Name="FavoritesSection" Spacing="8" Visibility="Collapsed">
+                <TextBlock Text="⭐ Favorites" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,8,0,0" />
+                <ListView x:Name="FavoritesList"
+                          SelectionMode="Single"
+                          SelectionChanged="FavoritesList_SelectionChanged"
+                          MaxHeight="200">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Padding="4" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
