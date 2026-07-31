@@ -6,7 +6,7 @@ namespace SimpleCurrencyConverter.Services;
 
 public class ExchangeRateService
 {
-    private const string ApiKey = "YOUR_API_KEY_HERE";
+    private const string ApiKey = "42fcd8db760daa050cde4453";
     private const string BaseUrl = "https://v6.exchangerate-api.com/v6";
     private readonly HttpClient _httpClient;
     private readonly CacheService _cacheService;
