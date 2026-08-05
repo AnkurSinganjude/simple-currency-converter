@@ -16,10 +16,17 @@ public sealed partial class MainWindow : Window
         // Set Mica backdrop
         this.SystemBackdrop = new MicaBackdrop();
 
-        // Set window size
+        // Set window size - maximize on launch
         var appWindow = this.AppWindow;
-        appWindow.Resize(new Windows.Graphics.SizeInt32(800, 750));
         appWindow.Title = "Simple Currency Converter";
+
+        // Get display area and maximize
+        var displayArea = Microsoft.UI.Windowing.DisplayArea.GetFromWindowId(
+            Microsoft.UI.Win32Interop.GetWindowIdFromWindow(
+                WinRT.Interop.WindowNative.GetWindowHandle(this)), 
+            Microsoft.UI.Windowing.DisplayAreaFallback.Primary);
+        var workArea = displayArea.WorkArea;
+        appWindow.MoveAndResize(new Windows.Graphics.RectInt32(0, 0, workArea.Width, workArea.Height));
 
         // Set window icon
         var iconPath = Path.Combine(AppContext.BaseDirectory, "Assets", "app.ico");
